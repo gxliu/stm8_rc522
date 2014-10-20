@@ -1,11 +1,11 @@
-#include"iostm8l101f3.h"
+#include"iostm8s103f2.h"
 #include"timer2.h"
 #include"uart.h"
 /*UART»º³å¶¨Ê±Æ÷*/
 
 void timer2_init()
 {
-    CLK_PCKENR|=0x01;//TIM2 PCKEN0
+	//CLK_PCKENR|=0x01;//TIM2 PCKEN0:STM8L
     TIM2_IER=0X01;//UIE
     //TIM2_EGR=0X01;
     TIM2_PSCR=0x01;//2·ÖÆµ=1MHz

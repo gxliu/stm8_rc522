@@ -1,4 +1,4 @@
-#include"iostm8l101f3.h"
+#include"iostm8s103f2.h"
 #include"iwdg.h"
 void iwdg_enable(void)
 {

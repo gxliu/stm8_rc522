@@ -1,4 +1,4 @@
-#include"iostm8s103f3.h"
+#include"iostm8s103f2.h"
 #include"timer1.h"
 //#include"uart.h"
 

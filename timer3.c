@@ -1,4 +1,4 @@
-#include"iostm8l101f3.h"
+#include"iostm8s103f2.h"
 #include"timer3.h"
 #include"main.h"
 #include"uart.h"
@@ -6,7 +6,7 @@
 
 void timer3_init()
 {
-    CLK_PCKENR|=0x02;//TIM3 PCKEN0
+	//CLK_PCKENR|=0x02;//TIM3 PCKEN0:STM8L
     TIM3_IER=0X01;//UIE
     TIM3_EGR=0X01;
     TIM3_PSCR=7;//2^7=128·ÖÆµ

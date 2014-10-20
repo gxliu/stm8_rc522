@@ -1,12 +1,12 @@
 #ifndef _EEPROM_H_
 #define _EEPROM_H_
 
-#define INTERNAL    0
-#define EXTERNAL    1
-#define USE_EEPROM  EXTERNAL
+#define INTERNAL    1
+#define EXTERNAL    0
+#define USE_EEPROM  INTERNAL
 
 #if USE_EEPROM == EXTERNAL
-    #include"at24c04.h"
+#include"at24c04.h"
 #else
 void eeprom_lock(void);
 void eeprom_unlock(void);

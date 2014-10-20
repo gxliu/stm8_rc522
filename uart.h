@@ -11,6 +11,8 @@
 
 #define UBUFF_SIZE  300
 
+extern char cmd;
+
 void uart_init(unsigned short baud);
 void uart_send_byte(char dat);
 void uart_send_string(const char *str);
@@ -20,5 +22,7 @@ void uart_rxie_disable();
 
 #define uart_putc(dat)  uart_send_byte(dat)
 #define uart_puts(str)  uart_send_string(str)
+void uart_puthex(char dat);
+char uart_getc(void);
 
 #endif
