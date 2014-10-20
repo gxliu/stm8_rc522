@@ -83,11 +83,11 @@
         </option>
         <option>
           <name>GenStackSize</name>
-          <state>###Uninitialized###</state>
+          <state>0x100</state>
         </option>
         <option>
           <name>GenHeapSize</name>
-          <state>###Uninitialized###</state>
+          <state>0x100</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -597,7 +597,7 @@
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>lnk0t.icf</state>
+          <state>$TOOLKIT_DIR$\config\lnkstm8.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -661,7 +661,7 @@
         </option>
         <option>
           <name>IlinkProgramEntryLabel</name>
-          <state></state>
+          <state>__iar_program_start</state>
         </option>
         <option>
           <name>DoFill</name>
@@ -1585,6 +1585,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\timer2.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\timer3.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\uart.c</name>

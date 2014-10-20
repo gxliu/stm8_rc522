@@ -6,7 +6,6 @@ void timer2_start();
 void timer2_stop();
 void timer2_irq_on();
 void timer2_irq_off();
-void timer2_wait_ms(char t);
-void set_timer2_wait_ms(char t);
+void timer2_wait_ticks(short t);
 
 #endif

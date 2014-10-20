@@ -5,19 +5,19 @@
 void timer1_init()
 {
     TIM1_IER=0X01;//UIE
-    TIM1_EGR=0X01;
+    //TIM1_EGR=0X01;
     TIM1_PSCRH=0;
     TIM1_PSCRL=200;//200·ÖÆµ
     TIM1_ARRH=10000>>8;
     TIM1_ARRL=10000&0xff;//¶¨Ê±1S
-    TIM1_CR1=0X95;//
+    //TIM1_CR1=0X95;//down-counter enable
 }
 
 void timer1_start()
 {
     TIM1_CNTRH=TIM1_ARRH;
     TIM1_CNTRL=TIM1_ARRL;
-    TIM1_CR1=0X95;//
+    TIM1_CR1=0X95;//down-counter enable
 }
 
 void timer1_stop()
@@ -47,16 +47,15 @@ char timeout1=1;
 __interrupt void timer1_overflow()
 {
     TIM1_SR1&=~0X01;//clear UIF bit
-    PA_ODR^=0XFF;
     if(--timeout1)
         return;
-    timer1_irq_off();
+    timer1_stop();
 }
 
 void timer1_wait_s(char t)
 {
-    timer1_irq_on();
-    //timer1_start();
+    //timer1_irq_on();
+    timer1_start();
     timeout1=t;
     while(timeout1);
 }

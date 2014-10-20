@@ -7,19 +7,18 @@
 
 void uart_init(unsigned short baud)
 {
-	/*PC_DDR|=0X08;//TX OUTPUT
-	PC_CR1|=0X0C;//TX PUSH-PULL,RX PULL-UP*/
-	//CLK_PCKENR|=0x20;//TIM2 PCKEN0:STM8L
-	UART1_CR1=0X00;
-	UART1_CR3=0X00;
-	unsigned short div=F_MASTER/baud;
-	UART1_BRR2=((div&0xf000)>>8)|(div&0x000f);
-	UART1_BRR1=(div&0x0ff0)>>4;//baud
-	UART1_CR2=0X2C;
-	/*UART1_CR4=0X00;
-	UART1_CR5=0X00;
-	UART1_GTR=0X00;
-	UART1_PSCR=0X00;*/
+    PD_DDR|=0X20;//TX OUTPUT
+    PD_CR1|=0X60;//TX PUSH-PULL,RX PULL-UP
+    UART1_CR1=0X00;
+    UART1_CR3=0X00;
+    unsigned short div=F_MASTER/baud;
+    UART1_BRR2=((div&0xf000)>>8)|(div&0x000f);
+    UART1_BRR1=(div&0x0ff0)>>4;//baud
+    UART1_CR2=0X2E;
+    /*UART1_CR4=0X00;
+    UART1_CR5=0X00;
+    UART1_GTR=0X00;
+    UART1_PSCR=0X00;*/
 }
 
 void uart_rxie_disable()
@@ -67,46 +66,24 @@ char uart_getc(void)
 
 extern char cmd;
 extern char cnt_dir,timecnt2;
-
 char ubuff[UBUFF_SIZE];
-short uart_cnt=0;
-char state=UART_OVER;
+char cnt=0;
+char state=UART_IDLE;
 #pragma vector=UART1_R_RXNE_vector
 __interrupt void UART1_Rx_ISR(void)//串口接收中断
 {
-	/*asm("SIM");
-	timer2_irq_off();*/
-	if(state != UART_FRAME)//两个字节间隔超过1ms则认定为新一帧数据
-	{
-		ubuff[0]=UART1_DR;
-		uart_cnt=1;
-		cnt_dir=0;//向下计数
-		state=UART_FRAME;
-		timer2_start();
-	}
-	else
-	{
-		ubuff[uart_cnt++]=UART1_DR;
-		//state=UART1_IDLE;
-	}
-	timecnt2=0;//清零，新一帧数据开始
-	//CLK_PCKENR|=0x03;//TIM2,3 PCKEN:STM8L
-	/*timer2_irq_on();
-	asm("RIM");*/
-}
-
-extern char timeout3;
-void uart_wait_receive(char opt)//opt=1, wait forever
-{
-	state=UART_IDLE;
-	if(opt)
-	{
-		while(state != UART_OVER);
-	}
-	else
-	{
-		set_timer3_wait_s(10);
-		while(state != UART_OVER && timeout3!=0);
-	}
-	ubuff[uart_cnt]='\0';
+    if(timecnt2 > 2)//两个字节间隔超过1ms则认定为新一帧数据
+    {
+        ubuff[0]=UART1_DR;
+        cnt=1;
+        cnt_dir=0;//向下计数
+        timer2_start();
+        state=UART_FRAME;
+    }
+    else
+    {
+        ubuff[cnt++]=UART1_DR;
+        //state=UART_IDLE;
+    }
+    timecnt2=0;//清零，新一帧数据开始
 }
