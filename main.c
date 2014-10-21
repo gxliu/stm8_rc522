@@ -4,10 +4,10 @@
 
 unsigned char UID[5],Temp[4]                                       ;
 unsigned char RF_Buffer[18]                                        ;
-unsigned char Password_Buffer[6]={0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}   ; // Mifare One È±Ê¡ÃÜÂë
+unsigned char Password_Buffer[6]={0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}   ; // Mifare One ç¼ºçœå¯†ç 
 
 char cmd;
-unsigned char des_on       = 0                                     ; // DES¼ÓÃÜ
+unsigned char des_on       = 0                                     ; // DESåŠ å¯†
 
 void auto_reader(void)
 {
@@ -85,14 +85,14 @@ void disp_menu(void)
 
 
 /*******************************************
-º¯ÊýÃû³Æ£ºhandle_menu_selection
-¹¦    ÄÜ£º´¦ÀíPCµÄÅäÖÃº¯Êý
-²Î    Êý£ºinputvalue--½ÓÊÕµ½µÄÀ´×ÔPC»úµÄ×Ö·û
-·µ»ØÖµ  £ºÎÞ
+å‡½æ•°åç§°ï¼šexe_cmd
+åŠŸ    èƒ½ï¼šæ‰§è¡Œä¸²å£æ”¶åˆ°çš„å‘½ä»¤
+å‚    æ•°ï¼šcmd--æŽ¥æ”¶åˆ°çš„æ¥è‡ªPCæœºçš„å‘½ä»¤å­—ç¬¦
+è¿”å›žå€¼  ï¼šæ— 
 ********************************************/
-void handle_menu_selection(char inputvalue)
+void exe_cmd(char cmd)
 {
-	switch(inputvalue)
+	switch(cmd)
 	{
 	case 'a':
 	case 'A':
@@ -112,15 +112,17 @@ void main( void )
 {
 	gpio_init();
 	uart_init(9600);
+	uart_puts("OK!\n");
 	asm("RIM");
-	PcdReset();//¸´Î»RC522
-	PcdAntennaOn();//¿ªÆôÌìÏß·¢Éä
+	PcdReset();//å¤ä½RC522
+	PcdAntennaOn();//å¼€å¯å¤©çº¿å‘å°„
 	disp_menu();
 	while(1)
 	{
 		uart_putc('>');
 		uart_putc('\n');
 		cmd=uart_getc();
-		handle_menu_selection(cmd);
+		//while(uart_state != UART_OVER);
+		exe_cmd(cmd);
 	}
 }

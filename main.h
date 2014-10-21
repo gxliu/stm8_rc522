@@ -20,7 +20,7 @@
 #define CMD_BEEP      	0x12
 #define CMD_LED_CTRL    0x13
 
-#define MSG_SIZE        10//×î¶à´æ´¢?ÌõÀëÏß¼ÇÂ¼
+#define MSG_SIZE        10//æœ€å¤šå­˜å‚¨?æ¡ç¦»çº¿è®°å½•
 
 #define MSG_TYPE_NORMAL     0x33
 #define MSG_TYPE_LOW_BAT    0x88

@@ -6,11 +6,11 @@ void timer2_init()
 {
     TIM2_IER=0X01;//UIE
     //TIM2_EGR=0X01;
-    TIM2_PSCR=0;//不分频:2MHz/0.5us
+    TIM2_PSCR=20;//20鍒嗛:2MHz/20=100kHz~10us
     /*TIM2_CNTRH=0;
     TIM2_CNTRL=0;*/
-    TIM2_ARRH=1000>>8;
-    TIM2_ARRL=1000&0xff;//1280定时640us
+    TIM2_ARRH=100>>8;
+    TIM2_ARRL=100&0xff;//瀹氭椂100*10us=1ms
     //TIM2_CR1=0X85;//
 }
 
@@ -38,20 +38,30 @@ void timer2_irq_off()
     TIM2_SR1&=~0X01;//clear UIF bit
 }
 
-extern char state;
+extern char uart_state;
 short timeout2=1;
-#pragma vector=TIM2_OVR_UIF_vector//定时512us溢出
+short timecnt2=0;
+char cnt_dir=1;//1:up counter
+#pragma vector=TIM2_OVR_UIF_vector//瀹氭椂1ms婧㈠嚭
 __interrupt void timer2_overflow()
 {
     TIM2_SR1&=~0X01;//clear UIF bit
-    if(--timeout2)
+	if(cnt_dir)
+	{
+		if(timecnt2++ == 2)
+			uart_state=UART_OVER;
+		else
+			return;
+	}
+    else if(--timeout2)
         return;
     timer2_stop();
 }
 
-void timer2_wait_ticks(short t)
+void timer2_wait_ms(short t)
 {
     timeout2=t;
+	cnt_dir=0;//鍚戜笅璁℃暟
     timer2_start();
     while(timeout2);
 }

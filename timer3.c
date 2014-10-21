@@ -6,9 +6,9 @@ void timer3_init()
 {
 	TIM3_IER=0X01;//UIE
 	TIM3_EGR=0X01;
-	TIM3_PSCR=20;//20��Ƶ
+	TIM3_PSCR=20;//20分频
 	TIM3_ARRH=100>>8;
-	TIM3_ARRL=100&0xff;//��ʱ1ms
+	TIM3_ARRL=100&0xff;//定时1ms
 	TIM3_CR1=0X95;//
 }
 
@@ -35,8 +35,8 @@ void timer3_irq_off()
 	TIM3_SR1&=~0X01;//clear UIF bit
 }
 
-char timeout3=0;//���¼���
-#pragma vector=TIM3_OVR_UIF_vector//��ʱ1ms���
+char timeout3=0;//向下计数
+#pragma vector=TIM3_OVR_UIF_vector//定时1ms溢出
 __interrupt void timer3_overflow()
 {
 	TIM3_SR1&=~0X01;//clear UIF bit
@@ -48,7 +48,7 @@ __interrupt void timer3_overflow()
 void timer3_wait_ms(char t)
 {
 	timer3_irq_on();
-	//timer3_start();
+	//timer3_start();//这里不调用就得在其他地方先调用
 	timeout3=t;
 	while(timeout3);
 }

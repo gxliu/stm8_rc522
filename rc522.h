@@ -3,47 +3,47 @@
 #include"iostm8s103f2.h"
 //***************************************************************************//
 //                                                                           //
-//                       Òı½Å¹¦ÄÜ¶¨Òå                                        //
+//                       å¼•è„šåŠŸèƒ½å®šä¹‰                                        //
 //                                                                           //
 //***************************************************************************//
 
-#define LED_RED                	0x00  // P2.0 ºìµÆÁÁÆğ
-#define LED_GRE                	0x00  // P2.0 ÂÌµÆÁÁÆğ
-#define RC522_RST               0x01  // P2.3 ÉäÆµ¿¨ĞİÃß¿ØÖÆ ------RST
-#define RC522_NSS               0x02  // p2.7 ÉäÆµ¿¨´Ó»úÑ¡Ôñ(SS)---SDA
-#define RC522_SCLK              0x03  // p2.6 ÉäÆµ¿¨Êı¾İÊ±ÖÓÊä³ö(SCLK)
-#define RC522_MOSI            	0x04  // p2.5 ÉäÆµÄ£¿éÊäÈë(MOSI)
-#define RC522_MISO				0x05  // p2.1 ÉäÆµÄ£¿éÊä³ö(MISO)
+#define LED_RED                	0x00  // P2.0 çº¢ç¯äº®èµ·
+#define LED_GRE                	0x00  // P2.0 ç»¿ç¯äº®èµ·
+#define RC522_RST               0x01  // P2.3 å°„é¢‘å¡ä¼‘çœ æ§åˆ¶ ------RST
+#define RC522_NSS               0x02  // p2.7 å°„é¢‘å¡ä»æœºé€‰æ‹©(SS)---SDA
+#define RC522_SCLK              0x03  // p2.6 å°„é¢‘å¡æ•°æ®æ—¶é’Ÿè¾“å‡º(SCLK)
+#define RC522_MOSI            	0x04  // p2.5 å°„é¢‘æ¨¡å—è¾“å…¥(MOSI)
+#define RC522_MISO				0x05  // p2.1 å°„é¢‘æ¨¡å—è¾“å‡º(MISO)
 
 //****************************************************************************
 //                                                                           *
-//                           ²Ù×÷ºê¶¨Òå                                      *
+//                           æ“ä½œå®å®šä¹‰                                      *
 //                                                                           *
 //****************************************************************************
 
-//------------------------------- RC522²Ù×÷ºê ------------------------------//
-#define    RC522_POWER_ON             PA_ODR &=~RC522_RST // ÉäÆµÄ£¿éÉÏµç
-#define    RC522_POWER_OFF            PA_ODR |= RC522_RST // ÉäÆµÄ£¿éÏÂµç
-#define    RED_LED_ON              	  PB_ODR &=~LED_RED   // ºìµÆÁÁÆğ
-#define    RED_LED_OFF                PB_ODR |= LED_RED   // ºìµÆÏ¨Ãğ
-#define    GRE_LED_ON                 PB_ODR &=~LED_GRE   // ÂÌµÆÁÁÆğ
-#define    GRE_LED_OFF                PB_ODR |= LED_GRE   // ÂÌµÆÏ¨Ãğ
+//------------------------------- RC522æ“ä½œå® ------------------------------//
+#define    RC522_POWER_ON             PA_ODR &=~RC522_RST // å°„é¢‘æ¨¡å—ä¸Šç”µ
+#define    RC522_POWER_OFF            PA_ODR |= RC522_RST // å°„é¢‘æ¨¡å—ä¸‹ç”µ
+#define    RED_LED_ON              	  PB_ODR &=~LED_RED   // çº¢ç¯äº®èµ·
+#define    RED_LED_OFF                PB_ODR |= LED_RED   // çº¢ç¯ç†„ç­
+#define    GRE_LED_ON                 PB_ODR &=~LED_GRE   // ç»¿ç¯äº®èµ·
+#define    GRE_LED_OFF                PB_ODR |= LED_GRE   // ç»¿ç¯ç†„ç­
 
-#define    RC522_SLEEP                PB_ODR &=~RC522_RST // ÉäÆµÄ£¿é»½ĞÑ
-#define    RC522_WAKEUP               PB_ODR |= RC522_RST // ÉäÆµÄ£¿éĞİÃß
+#define    RC522_SLEEP                PB_ODR &=~RC522_RST // å°„é¢‘æ¨¡å—å”¤é†’
+#define    RC522_WAKEUP               PB_ODR |= RC522_RST // å°„é¢‘æ¨¡å—ä¼‘çœ 
 
-#define    RC522_NSS_1                PB_ODR |= RC522_NSS // ´Ó»úÑ¡ÔñÎŞĞ§
-#define    RC522_NSS_0                PB_ODR &=~RC522_NSS // ´Ó»úÑ¡ÔñÓĞĞ§
-#define    RC522_SCLK_1               PB_ODR |= RC522_SCLK// Êı¾İÊ±ÖÓÖÃ¸ß
-#define    RC522_SCLK_0               PB_ODR &=~RC522_SCLK// Êı¾İÊ±ÖÓÖÃµÍ
-#define    RC522_MOSI_1               PB_ODR |= RC522_MOSI// Êı¾İÖÃ¸ß
-#define    RC522_MOSI_0               PB_ODR &=~RC522_MOSI// Êı¾İÖÃµÍ
-#define    RC522_MISO_IN             (PB_IDR &  RC522_MISO)// Êı¾İÊäÈë
+#define    RC522_NSS_1                PB_ODR |= RC522_NSS // ä»æœºé€‰æ‹©æ— æ•ˆ
+#define    RC522_NSS_0                PB_ODR &=~RC522_NSS // ä»æœºé€‰æ‹©æœ‰æ•ˆ
+#define    RC522_SCLK_1               PB_ODR |= RC522_SCLK// æ•°æ®æ—¶é’Ÿç½®é«˜
+#define    RC522_SCLK_0               PB_ODR &=~RC522_SCLK// æ•°æ®æ—¶é’Ÿç½®ä½
+#define    RC522_MOSI_1               PB_ODR |= RC522_MOSI// æ•°æ®ç½®é«˜
+#define    RC522_MOSI_0               PB_ODR &=~RC522_MOSI// æ•°æ®ç½®ä½
+#define    RC522_MISO_IN             (PB_IDR &  RC522_MISO)// æ•°æ®è¾“å…¥
 #define    RC522_RST_1                PB_ODR |= RC522_RST
 #define    RC522_RST_0                PB_ODR &=~RC522_RST
 
 
-//------------------------------ ²Ù×÷½á¹û  ---------------------------------------//
+//------------------------------ æ“ä½œç»“æœ  ---------------------------------------//
 #define    SUCCESS                    0X00
 #define    FAILURE                    0X01
 #define    CRC_ERROR                  0X02
@@ -53,40 +53,40 @@
 #define MAXRLEN        18
 #define MIN_STRENGTH  228
 //******************************************************************/
-//                    RC522 FIFO³¤¶È¶¨Òå                            /
+//                    RC522 FIFOé•¿åº¦å®šä¹‰                            /
 //******************************************************************/
 #define DEF_FIFO_LENGTH             64           //FIFO size=64byte
 
 //******************************************************************/
-//                       RC522ÃüÁî×Ö                                /
+//                       RC522å‘½ä»¤å­—                                /
 //******************************************************************/
-#define PCD_IDLE                  0x00           //È¡Ïûµ±Ç°ÃüÁî
-#define PCD_AUTHENT               0x0E           //ÑéÖ¤ÃÜÔ¿
-#define PCD_RECEIVE               0x08           //½ÓÊÕÊı¾İ
-#define PCD_TRANSMIT              0x04           //·¢ËÍÊı¾İ
-#define PCD_TRANSCEIVE            0x0C           //·¢ËÍ²¢½ÓÊÕÊı¾İ
-#define PCD_RESETPHASE            0x0F           //¸´Î»
-#define PCD_CALCCRC               0x03           //CRC¼ÆËã
+#define PCD_IDLE                  0x00           //å–æ¶ˆå½“å‰å‘½ä»¤
+#define PCD_AUTHENT               0x0E           //éªŒè¯å¯†é’¥
+#define PCD_RECEIVE               0x08           //æ¥æ”¶æ•°æ®
+#define PCD_TRANSMIT              0x04           //å‘é€æ•°æ®
+#define PCD_TRANSCEIVE            0x0C           //å‘é€å¹¶æ¥æ”¶æ•°æ®
+#define PCD_RESETPHASE            0x0F           //å¤ä½
+#define PCD_CALCCRC               0x03           //CRCè®¡ç®—
 
 //******************************************************************/
-//                   Mifare_One¿¨Æ¬ÃüÁî×Ö                          */
+//                   Mifare_Oneå¡ç‰‡å‘½ä»¤å­—                          */
 //******************************************************************/
-#define PICC_REQIDL               0x26           //Ñ°ÌìÏßÇøÄÚÎ´½øÈëĞİÃß×´Ì¬
-#define PICC_REQALL               0x52           //Ñ°ÌìÏßÇøÄÚÈ«²¿¿¨
-#define PICC_ANTICOLL1            0x93           //·À³å×²
-#define PICC_ANTICOLL2            0x95           //·À³å×²
-#define PICC_AUTHENT1A            0x60           //ÑéÖ¤AÃÜÔ¿
-#define PICC_AUTHENT1B            0x61           //ÑéÖ¤BÃÜÔ¿
-#define PICC_READ                 0x30           //¶Á¿é
-#define PICC_WRITE                0xA0           //Ğ´¿é
-#define PICC_DECREMENT            0xC0           //¿Û¿î
-#define PICC_INCREMENT            0xC1           //³äÖµ
-#define PICC_RESTORE              0xC2           //µ÷¿éÊı¾İµ½»º³åÇø
-#define PICC_TRANSFER             0xB0           //±£´æ»º³åÇøÖĞÊı¾İ
-#define PICC_HALT                 0x50           //ĞİÃß
+#define PICC_REQIDL               0x26           //å¯»å¤©çº¿åŒºå†…æœªè¿›å…¥ä¼‘çœ çŠ¶æ€
+#define PICC_REQALL               0x52           //å¯»å¤©çº¿åŒºå†…å…¨éƒ¨å¡
+#define PICC_ANTICOLL1            0x93           //é˜²å†²æ’
+#define PICC_ANTICOLL2            0x95           //é˜²å†²æ’
+#define PICC_AUTHENT1A            0x60           //éªŒè¯Aå¯†é’¥
+#define PICC_AUTHENT1B            0x61           //éªŒè¯Bå¯†é’¥
+#define PICC_READ                 0x30           //è¯»å—
+#define PICC_WRITE                0xA0           //å†™å—
+#define PICC_DECREMENT            0xC0           //æ‰£æ¬¾
+#define PICC_INCREMENT            0xC1           //å……å€¼
+#define PICC_RESTORE              0xC2           //è°ƒå—æ•°æ®åˆ°ç¼“å†²åŒº
+#define PICC_TRANSFER             0xB0           //ä¿å­˜ç¼“å†²åŒºä¸­æ•°æ®
+#define PICC_HALT                 0x50           //ä¼‘çœ 
 
 //******************************************************************/
-//                        MF522¼Ä´æÆ÷¶¨Òå                           /
+//                        MF522å¯„å­˜å™¨å®šä¹‰                           /
 //******************************************************************/
 // PAGE 0
 #define     RFU00                 0x00
@@ -158,7 +158,7 @@
 #define     RFU3F		  0x3F
 
 //******************************************************************/
-//                    RC522Í¨Ñ¶·µ»Ø´íÎó´úÂë                         /
+//                    RC522é€šè®¯è¿”å›é”™è¯¯ä»£ç                          /
 //******************************************************************/
 #define MI_ERR                      0xFE
 //#define MI_ERR                         //(-2)
@@ -242,7 +242,7 @@
 #define MI_VALERR                   0x85
 
 //******************************************************************/
-//                         º¯Êı¶¨Òå                                 /
+//                         å‡½æ•°å®šä¹‰                                 /
 //******************************************************************/
 char PcdHalt(void)                                                           ;
 char PcdReset(void)                                                          ;
@@ -270,13 +270,13 @@ char Read_Block(unsigned char Block,unsigned char *Buf)                      ;
 char Write_Block(unsigned char Block)                                        ;
 void PcdAntennaTestOn(void)                                                  ;
 
-extern char KK[8]                                                            ; // Êı¾İ¼ÓÃÜÃÜÔ¿
-extern unsigned char RF_Buffer[18]                                           ; // ÉäÆµ¿¨Êı¾İ»º³åÇø
+extern char KK[8]                                                            ; // æ•°æ®åŠ å¯†å¯†é’¥
+extern unsigned char RF_Buffer[18]                                           ; // å°„é¢‘å¡æ•°æ®ç¼“å†²åŒº
 extern unsigned char UID[5]                                                  ;
 extern unsigned char Password_Buffer[6]                                      ;
 extern void Delay(unsigned int DelayTime)                                    ;
 extern void Des_Encrypt(char* In, char* K,char* Out)                         ;
 extern void Des_Decrypt(char* In, char* K,char* Out)                         ;
-extern unsigned char des_on                                                  ; // DES¼ÓÃÜ±êÖ¾
+extern unsigned char des_on                                                  ; // DESåŠ å¯†æ ‡å¿—
 
 #endif

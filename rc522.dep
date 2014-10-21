@@ -2,7 +2,7 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>1238089529</fileChecksum>
+  <fileChecksum>3213368545</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
@@ -17,13 +17,13 @@
       <file>$PROJ_DIR$\uart.h</file>
       <file>$PROJ_DIR$\rc522.h</file>
       <file>$PROJ_DIR$\Debug\Obj\timer1.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\uart.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\timer2.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\rc522.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\iwdg.o</file>
       <file>$PROJ_DIR$\Debug\Obj\eeprom.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\iwdg.o</file>
       <file>$TOOLKIT_DIR$\inc\iostm8s103f2.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\timer2.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\uart.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\rc522.o</file>
       <file>$PROJ_DIR$\Debug\Obj\eeprom.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\iwdg.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
@@ -37,11 +37,9 @@
       <file>$PROJ_DIR$\eeprom.h</file>
       <file>$PROJ_DIR$\timer2.h</file>
       <file>$PROJ_DIR$\iwdg.h</file>
-      <file>$PROJ_DIR$\timer1.h</file>
-      <file>$PROJ_DIR$\timer3.h</file>
       <file>$PROJ_DIR$\Debug\Obj\timer3.o</file>
       <file>$PROJ_DIR$\Debug\Obj\timer3.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\iostm8l101f2.h</file>
+      <file>$PROJ_DIR$\Debug\Exe\rc522.hex</file>
     </outputs>
     <file>
       <name>[ROOT_NODE]</name>
@@ -57,7 +55,7 @@
       <outputs>
         <tool>
           <name>ICCSTM8</name>
-          <file> 16</file>
+          <file> 11</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -67,7 +65,7 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 17 27 28 29</file>
+          <file> 13 27 28 29</file>
         </tool>
       </inputs>
     </file>
@@ -86,7 +84,7 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 17 27 9 8</file>
+          <file> 13 27 9 8</file>
         </tool>
       </inputs>
     </file>
@@ -95,7 +93,7 @@
       <outputs>
         <tool>
           <name>ICCSTM8</name>
-          <file> 15</file>
+          <file> 12</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -105,7 +103,7 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 17 27 30</file>
+          <file> 13 27 30</file>
         </tool>
       </inputs>
     </file>
@@ -114,19 +112,13 @@
       <outputs>
         <tool>
           <name>ICCSTM8</name>
-          <file> 13</file>
+          <file> 17</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 21</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 9 17 27</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\timer1.c</name>
@@ -140,69 +132,54 @@
           <file> 22</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 27 31</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\timer2.c</name>
       <outputs>
         <tool>
           <name>ICCSTM8</name>
-          <file> 12</file>
+          <file> 15</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 23</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 27 29 8</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\timer3.c</name>
       <outputs>
         <tool>
           <name>ICCSTM8</name>
-          <file> 33</file>
+          <file> 31</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 34</file>
+          <file> 32</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 35 27 32 8</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\uart.c</name>
       <outputs>
         <tool>
           <name>ICCSTM8</name>
-          <file> 11</file>
+          <file> 16</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 24</file>
         </tool>
       </outputs>
-      <inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\rc522.out</name>
+      <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 17 27 8 29 32</file>
+          <name>OBJCOPY</name>
+          <file> 33</file>
         </tool>
-      </inputs>
+      </outputs>
     </file>
   </configuration>
   <configuration>

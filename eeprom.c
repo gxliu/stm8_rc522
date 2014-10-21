@@ -17,8 +17,8 @@ void eeprom_unlock(void)
 	//FLASH_CR2=0XFF;
 	if(!(FLASH_IAPSR & 0x08));//DUL bit is set?
 	do{
-		FLASH_DUKR = 0xAE;// Ğ´ÈëµÚÒ»¸öÃÜÔ¿
-		FLASH_DUKR = 0x56;// Ğ´ÈëµÚ¶ş¸öÃÜÔ¿
+		FLASH_DUKR = 0xAE;// å†™å…¥ç¬¬ä¸€ä¸ªå¯†é’¥
+		FLASH_DUKR = 0x56;// å†™å…¥ç¬¬äºŒä¸ªå¯†é’¥
 	}
 	while(!(FLASH_IAPSR&0x08));
 }
@@ -28,7 +28,7 @@ void eeprom_write_byte(char *dst,char dat)
 	//eeprom_unlock();
 	*dst= dat;
 	//set_timer2_wait_ms(10);
-	while((FLASH_IAPSR & 0x40) == 0 && timeout2!=0);// µÈ´ıĞ´²Ù×÷Íê³É
+	while((FLASH_IAPSR & 0x40) == 0 && timeout2!=0);// ç­‰å¾…å†™æ“ä½œå®Œæˆ
 	//eeprom_lock();
 }
 
@@ -46,12 +46,12 @@ void eeprom_write_block(char *dst,char *src,unsigned char cnt)
 	{
 		*(dst+i) = *(src+i);
 		//set_timer2_wait_ms(10);
-		while((FLASH_IAPSR & 0x40) == 0/* && timeout2!=0*/);// µÈ´ıĞ´²Ù×÷Íê³É
+		while((FLASH_IAPSR & 0x40) == 0/* && timeout2!=0*/);// ç­‰å¾…å†™æ“ä½œå®Œæˆ
 	}
 	//eeprom_lock();
 }
 
-void eeprom_read_block(char *dst,char *src,unsigned char cnt)//n<=16Á¬Ğø¶Á²»ÄÜ³¬¹ı16
+void eeprom_read_block(char *dst,char *src,unsigned char cnt)//n<=16è¿ç»­è¯»ä¸èƒ½è¶…è¿‡16
 {
 	//eeprom_unlock();
 	for(unsigned char i=0; i<cnt ;i++)
@@ -93,7 +93,7 @@ __interrupt void FLASH_EOP_ISR()
 
 #else
 #include"at24c04.h"
-/*´ÓÖ¸¶¨µØÖ·¶ÁÒ»¸ö×Ö½Ú³öÀ´*/
+/*ä»æŒ‡å®šåœ°å€è¯»ä¸€ä¸ªå­—èŠ‚å‡ºæ¥*/
 char eeprom_read_byte(short src)
 {
 	char data;
@@ -110,8 +110,8 @@ char eeprom_read_byte(short src)
 	return data;
 }
 
-/*´ÓÒ»¸öµØÖ·¿ªÊ¼Á¬Ğø¶Á³ö×Ö·û´®(n¸ö×Ö·û)*/
-void eeprom_read_block(char *dst,short src,char n)//n<=16£¬Ò»´ÎÁ¬Ğø¶ÁĞ´½öÏŞÓÚÍ¬Ò»¸öPage£¬²»ÄÜ³¬¹ı16×Ö½Ú
+/*ä»ä¸€ä¸ªåœ°å€å¼€å§‹è¿ç»­è¯»å‡ºå­—ç¬¦ä¸²(nä¸ªå­—ç¬¦)*/
+void eeprom_read_block(char *dst,short src,char n)//n<=16ï¼Œä¸€æ¬¡è¿ç»­è¯»å†™ä»…é™äºåŒä¸€ä¸ªPageï¼Œä¸èƒ½è¶…è¿‡16å­—èŠ‚
 {
 	char i,j=0,rem;
 	do{
@@ -138,7 +138,7 @@ void eeprom_read_block(char *dst,short src,char n)//n<=16£¬Ò»´ÎÁ¬Ğø¶ÁĞ´½öÏŞÓÚÍ¬Ò
 	}while(n);
 }
 
-/*ÏòÖ¸¶¨µØÖ·Ğ´Ò»¸ö×Ö½Ú*/
+/*å‘æŒ‡å®šåœ°å€å†™ä¸€ä¸ªå­—èŠ‚*/
 void eeprom_write_byte(short dst, char src)
 {
 	char page=(char)((dst&0x300)>>7);
@@ -150,8 +150,8 @@ void eeprom_write_byte(short dst, char src)
 	I2C_Stop();
 }
 
-/*´ÓÒ»¸öµØÖ·¿ªÊ¼Á¬ĞøĞ´Èë×Ö·û´®*/
-void eeprom_write_block(short dst,char *src,char n)//n<=16£¬Ò»´ÎÁ¬Ğø¶ÁĞ´½öÏŞÓÚÍ¬Ò»¸öPage£¬²»ÄÜ³¬¹ı16×Ö½Ú
+/*ä»ä¸€ä¸ªåœ°å€å¼€å§‹è¿ç»­å†™å…¥å­—ç¬¦ä¸²*/
+void eeprom_write_block(short dst,char *src,char n)//n<=16ï¼Œä¸€æ¬¡è¿ç»­è¯»å†™ä»…é™äºåŒä¸€ä¸ªPageï¼Œä¸èƒ½è¶…è¿‡16å­—èŠ‚
 {
 	char i,j=0,rem;
 	do{

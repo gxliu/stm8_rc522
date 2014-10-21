@@ -3,7 +3,7 @@
 #include"timer2.h"
 #include"timer3.h"
 
-#define F_MASTER 2000000//Ö÷Æµ2MHz
+#define F_MASTER 2000000//ä¸»é¢‘2MHz
 
 void uart_init(unsigned short baud)
 {
@@ -59,31 +59,30 @@ void uart_puthex(char dat)
 
 char uart_getc(void)
 {
-	while(!(UART1_SR&0X08));//ĞèÒªÈ·ÈÏÒ»ÏÂRXNEÔÚÄÇ¸öbit
+	while(!(UART1_SR&MASK_UART1_SR_RXNE));//0x20
 	return UART1_DR;
 }
 
 
 extern char cmd;
-extern char cnt_dir,timecnt2;
 char ubuff[UBUFF_SIZE];
 char cnt=0;
-char state=UART_IDLE;
+char uart_state=UART_IDLE;
 #pragma vector=UART1_R_RXNE_vector
-__interrupt void UART1_Rx_ISR(void)//´®¿Ú½ÓÊÕÖĞ¶Ï
+__interrupt void UART1_Rx_ISR(void)//ä¸²å£æ¥æ”¶ä¸­æ–­
 {
-    if(timecnt2 > 2)//Á½¸ö×Ö½Ú¼ä¸ô³¬¹ı1msÔòÈÏ¶¨ÎªĞÂÒ»Ö¡Êı¾İ
+    if(timecnt2 > 2)//ä¸¤ä¸ªå­—èŠ‚é—´éš”è¶…è¿‡1msåˆ™è®¤å®šä¸ºæ–°ä¸€å¸§æ•°æ®
     {
         ubuff[0]=UART1_DR;
         cnt=1;
-        cnt_dir=0;//ÏòÏÂ¼ÆÊı
+		cnt_dir=1;//å‘ä¸Šè®¡æ•°
         timer2_start();
-        state=UART_FRAME;
+        uart_state=UART_FRAME;
     }
     else
     {
         ubuff[cnt++]=UART1_DR;
         //state=UART_IDLE;
     }
-    timecnt2=0;//ÇåÁã£¬ĞÂÒ»Ö¡Êı¾İ¿ªÊ¼
+    timecnt2=0;//æ¸…é›¶ï¼Œæ–°ä¸€å¸§æ•°æ®å¼€å§‹
 }
