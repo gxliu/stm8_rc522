@@ -7,14 +7,14 @@
     <name>Debug</name>
     <outputs>
       <file>$PROJ_DIR$\eeprom.c</file>
-      <file>$PROJ_DIR$\main.c</file>
       <file>$PROJ_DIR$\iwdg.c</file>
+      <file>$PROJ_DIR$\ht1621.c</file>
+      <file>$PROJ_DIR$\main.c</file>
       <file>$PROJ_DIR$\rc522.c</file>
       <file>$PROJ_DIR$\timer1.c</file>
       <file>$PROJ_DIR$\timer2.c</file>
       <file>$PROJ_DIR$\timer3.c</file>
       <file>$PROJ_DIR$\uart.c</file>
-      <file>$PROJ_DIR$\ht1621.c</file>
     </outputs>
   </configuration>
   <configuration>

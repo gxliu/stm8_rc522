@@ -42,11 +42,28 @@ __interrupt void timer1_capture_ch1()
 
 }*/
 
+char hour=0,min=30,sec=0;
 static unsigned short timeout1=1;
 #pragma vector=TIM1_OVR_UIF_vector//定时1S溢出
 __interrupt void timer1_overflow()
 {
     TIM1_SR1&=~0X01;//clear UIF bit
+	if(sec-- == 0 && (min>0 || hour>0))
+	{
+		sec=59;
+		if(min-- == 0 && hour>0)
+		{
+			min=59;
+			if(hour-- == 0)
+			{
+				hour=0;
+				timer1_stop();
+			}
+		}
+	}
+	else
+	{
+	}
     if(--timeout1)
         return;
     timer1_stop();
@@ -59,3 +76,4 @@ void timer1_wait_s(unsigned short t)
     timeout1=t;
     while(timeout1);
 }
+

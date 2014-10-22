@@ -1,4 +1,5 @@
 #include "iostm8s103f2.h"
+#include "main.h"
 #include "rc522.h"
 #include "uart.h"
 #include "string.h"
@@ -6,13 +7,13 @@
 #include "timer2.h"
 #include "timer3.h"
 
-unsigned char mf_uid[5],temp[4]                                       ;                                      ;
-unsigned char mf_key_buff[6]={0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}   ; // Mifare One 缺省密码
+unsigned char mf_uid[5],temp[4];                                      ;
+unsigned char mf_key_buff[6]={0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}; // Mifare One 缺省密码
 unsigned char mf_dat_buff[18];
 unsigned char MLastSelectedSnr[4];
 
 char cmd;
-unsigned char des_on       = 0                                     ; // DES加密
+unsigned char des_on=0; // DES加密
 
 void find_card(void)
 {
@@ -190,6 +191,9 @@ void main( void )
 	gpio_init();
 	uart_init(9600);
 	uart_puts("OK!\n");
+	timer1_init();
+	timer2_init();
+	timer3_init();
 	asm("RIM");
 	PcdReset();//复位RC522
 	PcdAntennaOn();//开启天线发射
@@ -202,4 +206,12 @@ void main( void )
 		//while(uart_state != UART_OVER);
 		exe_cmd(cmd);
 	}
+}
+
+void sys_reset(void)
+{
+	asm("SIM");//关全局中断
+	//asm("JPF 08000H");//跳到复位中断向量处
+	WWDG_CR=0X80;//开启Window Watch Dog并清除T6位来复位
+	while(1);
 }
