@@ -12,6 +12,7 @@
 #define UBUFF_SIZE  300
 
 extern char cmd;
+extern unsigned char ubuff[UBUFF_SIZE];
 extern char uart_state;
 
 void uart_init(unsigned short baud);

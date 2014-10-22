@@ -1,71 +1,65 @@
 #include "iostm8s103f2.h"
 #include "rc522.h"
 #include "uart.h"
+#include "string.h"
+#include "timer1.h"
+#include "timer2.h"
+#include "timer3.h"
 
-unsigned char UID[5],Temp[4]                                       ;
-unsigned char RF_Buffer[18]                                        ;
-unsigned char Password_Buffer[6]={0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}   ; // Mifare One 缺省密码
+unsigned char mf_uid[5],temp[4]                                       ;                                      ;
+unsigned char mf_key_buff[6]={0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}   ; // Mifare One 缺省密码
+unsigned char mf_dat_buff[18];
+unsigned char MLastSelectedSnr[4];
 
 char cmd;
 unsigned char des_on       = 0                                     ; // DES加密
 
-void auto_reader(void)
-{
-	while(1)
-	{
-		if(PcdRequest(0x52,Temp)==MI_OK)
-		{
-			if(Temp[0]==0x04&&Temp[1]==0x00)
-				uart_puts("MFOne-S50");
-			else if(Temp[0]==0x02&&Temp[1]==0x00)
-				uart_puts("MFOne-S70");
-			else if(Temp[0]==0x44&&Temp[1]==0x00)
-				uart_puts("MF-UltraLight");
-			else if(Temp[0]==0x08&&Temp[1]==0x00)
-				uart_puts("MF-Pro");
-			else if(Temp[0]==0x44&&Temp[1]==0x03)
-				uart_puts("MF Desire");
-			else
-				uart_puts("Unknown");
-			if(PcdAnticoll(UID)==MI_OK)
-			{
-				uart_puts("Card Id is:");
-				uart_puthex(UID[0]);
-				uart_puthex(UID[1]);
-				uart_puthex(UID[2]);
-				uart_puthex(UID[3]);
-
-				RED_LED_ON                                            ;
-				Delay(200)                                           ;
-				RED_LED_OFF                                           ;
-				Delay(200)                                           ;
-			}
-		}
-		else GRE_LED_OFF                                            ;
-	}
-}
-
 void find_card(void)
 {
-	if(PcdRequest(0x52,Temp)==MI_OK)
+	if(PcdRequest(0x52,temp)==MI_OK)
 	{
-		if(Temp[0]==0x04&&Temp[1]==0x00)
+		if(temp[0]==0x04&&temp[1]==0x00)
 			uart_puts("MFOne-S50\n");
-		else if(Temp[0]==0x02&&Temp[1]==0x00)
+		else if(temp[0]==0x02&&temp[1]==0x00)
 			uart_puts("MFOne-S70\n");
-		else if(Temp[0]==0x44&&Temp[1]==0x00)
+		else if(temp[0]==0x44&&temp[1]==0x00)
 			uart_puts("MF-UltraLight\n");
-		else if(Temp[0]==0x08&&Temp[1]==0x00)
+		else if(temp[0]==0x08&&temp[1]==0x00)
 			uart_puts("MF-Pro\n");
-		else if(Temp[0]==0x44&&Temp[1]==0x03)
+		else if(temp[0]==0x44&&temp[1]==0x03)
 			uart_puts("MF Desire\n");
 		else
 			uart_puts("Unknown\n");
-		uart_puts("Success!\n");
+		if(PcdAnticoll(mf_uid)==MI_OK)
+		{
+			uart_puts("Card UID is:");
+			uart_puthex(mf_uid[0]);
+			uart_putc(' ');
+			uart_puthex(mf_uid[1]);
+			uart_putc(' ');
+			uart_puthex(mf_uid[2]);
+			uart_putc(' ');
+			uart_puthex(mf_uid[3]);
+			uart_putc('\n');
+
+			RED_LED_ON;
+			timer3_wait_ms(200);
+			RED_LED_OFF;
+			timer3_wait_ms(200);
+		}
 	}
 	else
 	{
-		uart_puts("Failed!\n");
+		GRE_LED_OFF;
+		uart_puts("Failed");
+	}
+}
+
+void auto_find(void)
+{
+	while(cmd=='A' || cmd=='a')
+	{
+		find_card();
 	}
 }
 
@@ -92,15 +86,98 @@ void disp_menu(void)
 ********************************************/
 void exe_cmd(char cmd)
 {
+	char status;
 	switch(cmd)
 	{
 	case 'a':
 	case 'A':
-		auto_reader();
+		auto_find();
 		break;
 	case 'f':
 	case 'F':
 		find_card();
+		break;
+	case 1: // Halt the card     //终止卡的操作
+		status= PcdHalt();;
+		ubuff[0]=1;
+		ubuff[1]=status;
+		break;
+	case 2: // Request,Anticoll,Select,return CardType(2 bytes)+CardSerialNo(4 bytes)
+		// 寻卡，防冲突，选择卡    返回卡类型（2 bytes）+ 卡系列号(4 bytes)
+		status= PcdRequest(ubuff[1],&ubuff[2]);
+		if(status!=0)
+		{
+			status= PcdRequest(ubuff[1],&ubuff[2]);
+			if(status!=0)
+			{
+				ubuff[0]=1;
+				ubuff[1]=status;
+				break;
+			}
+		}
+		ubuff[0]=3;
+		ubuff[1]=status;
+		break;
+	case 3: // 防冲突 读卡的系列号 MLastSelectedSnr
+		status = PcdAnticoll(&ubuff[2]);
+		if(status!=0)
+		{
+			ubuff[0]=1;
+			ubuff[1]=status;
+			break;
+		}
+		memcpy(MLastSelectedSnr,&ubuff[2],4);
+		ubuff[0]=5;
+		ubuff[1]=status;
+		break;
+	case 4:	// 选择卡 Select Card
+		status=PcdSelect(MLastSelectedSnr);
+		if(status!=MI_OK)
+		{
+			ubuff[0]=1;
+			ubuff[1]=status;
+			break;
+		}
+		ubuff[0]=3;
+		ubuff[1]=status;
+		break;
+	case 5:	// Key loading into the MF RC500's EEPROM
+		status = PcdAuthState(ubuff[1], ubuff[3], mf_key_buff, MLastSelectedSnr);// 校验卡密码
+		ubuff[0]=1;
+		ubuff[1]=status;
+		break;
+	case 6:
+		ubuff[0]=1;
+		ubuff[1]=status;
+		break;
+	case 7:
+		ubuff[0]=1;
+		ubuff[1]=status;
+		break;
+	case 8: // Read the mifare card
+		// 读卡
+		status=PcdRead(ubuff[1],&ubuff[2]);
+		if(status==0)
+		{ubuff[0]=17;}
+		else
+		{ubuff[0]=1;}
+		ubuff[1]=status;
+		break;
+	case 9: // Write the mifare card
+		// 写卡  下载密码
+		status=PcdWrite(ubuff[1],&ubuff[2]);
+		ubuff[0]=1;
+		ubuff[1]=status;
+		break;
+	case 10:
+		PcdValue(ubuff[1],ubuff[2],&ubuff[3]);
+		ubuff[0]=1;
+		ubuff[1]=status;
+		break;
+	case 12: // 参数设置
+		PcdBakValue(ubuff[1], ubuff[2]);
+		ubuff[0]=1;	//contact
+		ubuff[1]=0;
 		break;
 	default:
 		disp_menu();

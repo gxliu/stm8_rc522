@@ -155,7 +155,7 @@
 #define     RFU3C                 0x3C
 #define     RFU3D                 0x3D
 #define     RFU3E                 0x3E
-#define     RFU3F		  0x3F
+#define     RFU3F		  		  0x3F
 
 //******************************************************************/
 //                    RC522通讯返回错误代码                         /
@@ -271,9 +271,9 @@ char Write_Block(unsigned char Block)                                        ;
 void PcdAntennaTestOn(void)                                                  ;
 
 extern char KK[8]                                                            ; // 数据加密密钥
-extern unsigned char RF_Buffer[18]                                           ; // 射频卡数据缓冲区
-extern unsigned char UID[5]                                                  ;
-extern unsigned char Password_Buffer[6]                                      ;
+extern unsigned char mf_dat_buff[18]                                           ; // 射频卡数据缓冲区
+extern unsigned char mf_uid[5]                                                  ;
+extern unsigned char mf_key_buff[6]                                      ;
 extern void Delay(unsigned int DelayTime)                                    ;
 extern void Des_Encrypt(char* In, char* K,char* Out)                         ;
 extern void Des_Decrypt(char* In, char* K,char* Out)                         ;

@@ -1572,6 +1572,9 @@
     <name>$PROJ_DIR$\eeprom.c</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\ht1621.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\iwdg.c</name>
   </file>
   <file>

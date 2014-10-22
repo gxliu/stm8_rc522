@@ -35,7 +35,7 @@ void timer3_irq_off()
 	TIM3_SR1&=~0X01;//clear UIF bit
 }
 
-char timeout3=0;//向下计数
+static unsigned short timeout3=0;//向下计数
 #pragma vector=TIM3_OVR_UIF_vector//定时1ms溢出
 __interrupt void timer3_overflow()
 {
@@ -45,7 +45,7 @@ __interrupt void timer3_overflow()
 	timer3_irq_off();
 }
 
-void timer3_wait_ms(char t)
+void timer3_wait_ms(unsigned short t)
 {
 	timer3_irq_on();
 	//timer3_start();//这里不调用就得在其他地方先调用

@@ -1,7 +1,7 @@
 #ifndef _TIMER2_H_
 #define _TIMER2_H_
 
-extern short timecnt2;
+extern unsigned short timecnt2;
 extern char cnt_dir;
 
 void timer2_init();

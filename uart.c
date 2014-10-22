@@ -65,7 +65,7 @@ char uart_getc(void)
 
 
 extern char cmd;
-char ubuff[UBUFF_SIZE];
+unsigned char ubuff[UBUFF_SIZE];
 char cnt=0;
 char uart_state=UART_IDLE;
 #pragma vector=UART1_R_RXNE_vector

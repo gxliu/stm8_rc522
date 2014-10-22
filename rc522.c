@@ -562,13 +562,14 @@ char PcdRead(unsigned char addr,unsigned char *pData)
 char Read_Block(unsigned char Block,unsigned char *Buf)
 {
 	char result                                             ;
-	result = PcdAuthState(0x60,Block,Password_Buffer,UID)   ;
+	result = PcdAuthState(0x60,Block,mf_key_buff,mf_uid)   ;
 	if(result!=MI_OK)
 		return result                                         ;
 	result = PcdRead(Block,Buf)                             ;
 	//  return result; // 2011.01.03
 
-	if(result!=MI_OK)     return   result                   ;
+	if(result!=MI_OK)
+		return result                   ;
 	if(Block!=0x00&&des_on)
 	{
 		Des_Decrypt((char *)Buf    ,KK,(char *)Buf    )       ;
@@ -594,8 +595,7 @@ char PcdWrite(unsigned char addr,unsigned char *pData)
 	CalulateCRC(ucComMF522Buf,2,&ucComMF522Buf[2])          ;
 	status = PcdComMF522(PCD_TRANSCEIVE,ucComMF522Buf,4,
 						 ucComMF522Buf,&unLen          )    ;
-	if(  ( status != MI_OK)||(unLen != 4)
-	   ||((ucComMF522Buf[0]&0x0F)!= 0x0A))
+	if(( status != MI_OK)||(unLen != 4)||((ucComMF522Buf[0]&0x0F)!= 0x0A))
 		status = MI_ERR                                       ;
 	if (status == MI_OK)
 	{
@@ -604,8 +604,7 @@ char PcdWrite(unsigned char addr,unsigned char *pData)
 		CalulateCRC(ucComMF522Buf,16,&ucComMF522Buf[16])      ;
 		status = PcdComMF522(PCD_TRANSCEIVE,ucComMF522Buf,
 							 18,ucComMF522Buf,&unLen     )    ;
-		if(  (status != MI_OK)||(unLen != 4 )
-		   ||((ucComMF522Buf[0]&0x0F)!= 0x0A))
+		if((status != MI_OK)||(unLen != 4)||((ucComMF522Buf[0]&0x0F)!= 0x0A))
 			status = MI_ERR                                     ;
 	}
 	return status                                           ;
@@ -622,15 +621,15 @@ char Write_Block(unsigned char Block)
 	char result                                             ;
 	if(des_on)
 	{
-		Des_Encrypt((char *)RF_Buffer    ,KK,
-					(char *)RF_Buffer        )                ;// for debug
-		Des_Encrypt((char *)&RF_Buffer[8],KK,
-					(char *)&RF_Buffer[8]    )                ;// for debug
+		Des_Encrypt((char *)mf_dat_buff    ,KK,
+					(char *)mf_dat_buff        )                ;// for debug
+		Des_Encrypt((char *)&mf_dat_buff[8],KK,
+					(char *)&mf_dat_buff[8]    )                ;// for debug
 	}
-	result = PcdAuthState(0x60,Block,Password_Buffer,UID)   ;
+	result = PcdAuthState(0x60,Block,mf_key_buff,mf_uid)   ;
 	if(result!=MI_OK)
 		return result                                         ;
-	result = PcdWrite(Block,RF_Buffer)                      ;
+	result = PcdWrite(Block,mf_dat_buff)                      ;
 	return result                                           ;
 }
 
@@ -685,18 +684,18 @@ char PcdValue(unsigned char dd_mode,unsigned char addr,unsigned char *pValue)
 
 //******************************************************************/
 //功    能：备份钱包
-//参数说明: sourceaddr[IN]：源地址
-//          goaladdr[IN]：目标地址
+//参数说明: src_addr[IN]：源地址
+//          dst_addr[IN]：目标地址
 //返    回: 成功返回MI_OK
 //******************************************************************/
-char PcdBakValue(unsigned char sourceaddr, unsigned char goaladdr)
+char PcdBakValue(unsigned char src_addr, unsigned char dst_addr)
 {
 	char status;
 	unsigned int  unLen;
 	unsigned char ucComMF522Buf[MAXRLEN];
 
 	ucComMF522Buf[0] = PICC_RESTORE;
-	ucComMF522Buf[1] = sourceaddr;
+	ucComMF522Buf[1] = src_addr;
 	CalulateCRC(ucComMF522Buf,2,&ucComMF522Buf[2]);
 
 	status = PcdComMF522(PCD_TRANSCEIVE,ucComMF522Buf,4,ucComMF522Buf,&unLen);
@@ -721,7 +720,7 @@ char PcdBakValue(unsigned char sourceaddr, unsigned char goaladdr)
 	{    return MI_ERR;   }
 
 	ucComMF522Buf[0] = PICC_TRANSFER;
-	ucComMF522Buf[1] = goaladdr;
+	ucComMF522Buf[1] = dst_addr;
 
 	CalulateCRC(ucComMF522Buf,2,&ucComMF522Buf[2]);
 

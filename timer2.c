@@ -38,9 +38,8 @@ void timer2_irq_off()
     TIM2_SR1&=~0X01;//clear UIF bit
 }
 
-extern char uart_state;
-short timeout2=1;
-short timecnt2=0;
+static unsigned short timeout2=1;
+unsigned short timecnt2=0;
 char cnt_dir=1;//1:up counter
 #pragma vector=TIM2_OVR_UIF_vector//定时1ms溢出
 __interrupt void timer2_overflow()
@@ -58,7 +57,7 @@ __interrupt void timer2_overflow()
     timer2_stop();
 }
 
-void timer2_wait_ms(short t)
+void timer2_wait_ms(unsigned short t)
 {
     timeout2=t;
 	cnt_dir=0;//向下计数

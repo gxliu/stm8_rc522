@@ -42,7 +42,7 @@ __interrupt void timer1_capture_ch1()
 
 }*/
 
-char timeout1=1;
+static unsigned short timeout1=1;
 #pragma vector=TIM1_OVR_UIF_vector//定时1S溢出
 __interrupt void timer1_overflow()
 {
@@ -52,7 +52,7 @@ __interrupt void timer1_overflow()
     timer1_stop();
 }
 
-void timer1_wait_s(char t)
+void timer1_wait_s(unsigned short t)
 {
     //timer1_irq_on();
     timer1_start();

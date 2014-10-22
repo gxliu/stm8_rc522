@@ -6,6 +6,6 @@ void timer1_start();
 void timer1_stop();
 void timer1_irq_on();
 void timer1_irq_off();
-void timer1_wait_s(char t);
+void timer1_wait_s(unsigned short t);
 
 #endif
