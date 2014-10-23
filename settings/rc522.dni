@@ -9,11 +9,15 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=1191820359
+Checksum=-1599705479
 [CallStack]
 ShowArgs=0
 [Disassembly]
 MixedMode=1
+[watch_formats]
+Fmt0={W}0:hour	3	0
+Fmt1={W}0:min	3	0
+Fmt2={W}0:sec	3	0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -30,7 +34,7 @@ Graph=0
 Symbiont=0
 Exclusions=
 [InterruptLog]
-LogEnabled=0
+LogEnabled=1
 SumEnabled=0
 GraphEnabled=0
 ShowTimeLog=1
@@ -43,7 +47,8 @@ GraphEnabled=0
 ShowTimeLog=1
 ShowTimeSum=1
 [Breakpoints2]
-Count=0
+Bp0=_ 1 "STD_CODE2" "{$PROJ_DIR$\timer1.c}.50.5" 0 0 1 "" 0 ""
+Count=1
 [Interrupts]
 Enabled=1
 [MemoryMap]

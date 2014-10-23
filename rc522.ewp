@@ -17,7 +17,7 @@
         <debug>1</debug>
         <option>
           <name>GenDeviceSelectMenu</name>
-          <state>STM8S103F2P	STM8S103F2P</state>
+          <state>STM8S103F3P	STM8S103F3P</state>
         </option>
         <option>
           <name>GenCodeModel</name>
@@ -1572,9 +1572,6 @@
     <name>$PROJ_DIR$\eeprom.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\ht1621.c</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\iwdg.c</name>
   </file>
   <file>
@@ -1588,9 +1585,6 @@
   </file>
   <file>
     <name>$PROJ_DIR$\timer2.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\timer3.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\uart.c</name>

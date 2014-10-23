@@ -6,12 +6,12 @@
 #define LED_G         0X04//PB2
 #define BEEP          0X02//PB1
 
-#define CMD_SLEEP		0x00
-#define CMD_SYSY_RST	0x01
-#define CMD_SYS_INFO    0x02
-#define CMD_REPORT  	0x11
-#define CMD_BEEP      	0x12
-#define CMD_LED_CTRL    0x13
+#define CMD_SLEEP		0xF0
+#define CMD_SYSY_RST	0xF1
+#define CMD_SYS_INFO    0xF2
+#define CMD_REPORT  	0xF1
+#define CMD_BEEP      	0xF2
+#define CMD_LED_CTRL    0xF3
 
 #define mcu_sleep()     asm("WFI")//WFI:Enter Wait Mode to save power while peripherals keep running
 

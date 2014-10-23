@@ -1,4 +1,4 @@
-#include "iostm8s103f2.h"
+#include "iostm8s103f3.h"
 #include "main.h"
 #include "rc522.h"
 #include "uart.h"
@@ -6,6 +6,8 @@
 #include "timer1.h"
 #include "timer2.h"
 #include "timer3.h"
+
+const char sys_info[72]="RFID Seat Booking Service V1.0\n2014.10 © by xhly: xhlyuestc@gmail.com\n";
 
 unsigned char mf_uid[5],temp[4];                                      ;
 unsigned char mf_key_buff[6]={0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}; // Mifare One 缺省密码
@@ -44,9 +46,9 @@ void find_card(void)
 			uart_putc('\n');
 
 			RED_LED_ON;
-			timer3_wait_ms(200);
+			//timer3_wait_ms(200);
 			RED_LED_OFF;
-			timer3_wait_ms(200);
+			//timer3_wait_ms(200);
 		}
 	}
 	else
@@ -180,6 +182,8 @@ void exe_cmd(char cmd)
 		ubuff[0]=1;	//contact
 		ubuff[1]=0;
 		break;
+	case CMD_SYS_INFO:
+		uart_puts(sys_info);
 	default:
 		disp_menu();
 	}
@@ -193,8 +197,9 @@ void main( void )
 	uart_puts("OK!\n");
 	timer1_init();
 	timer2_init();
-	timer3_init();
+	//timer3_init();
 	asm("RIM");
+	timer1_start();
 	PcdReset();//复位RC522
 	PcdAntennaOn();//开启天线发射
 	disp_menu();
