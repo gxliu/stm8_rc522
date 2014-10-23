@@ -43,6 +43,15 @@ void uart_send_string(const char *str)
 		uart_send_byte(*str++);
 }
 
+void uart_send_cnt(unsigned char *dat,char cnt)
+{
+	cnt++;
+	for(char i=0;i<cnt;i++)
+	{
+		uart_send_byte(dat[i]);
+	}
+}
+
 void uart_puthex(char dat)
 {
 	char temp=dat>>4;

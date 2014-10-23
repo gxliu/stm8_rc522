@@ -18,6 +18,7 @@ extern char uart_state;
 void uart_init(unsigned short baud);
 void uart_send_byte(char dat);
 void uart_send_string(const char *str);
+void uart_send_cnt(unsigned char *dat,char cnt);
 void uart_wait_receive(char opt);
 void uart_rxie_enable();
 void uart_rxie_disable();

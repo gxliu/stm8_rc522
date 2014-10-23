@@ -7,7 +7,7 @@
 #define BEEP          0X02//PB1
 
 #define CMD_SLEEP		0xF0
-#define CMD_SYSY_RST	0xF1
+#define CMD_SYS_RST		0xF1
 #define CMD_SYS_INFO    0xF2
 #define CMD_REPORT  	0xF1
 #define CMD_BEEP      	0xF2
