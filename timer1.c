@@ -1,6 +1,6 @@
 #include"iostm8s103f3.h"
 #include"timer1.h"
-//#include"uart.h"
+#include"main.h"
 
 void timer1_init()
 {
@@ -63,6 +63,8 @@ __interrupt void timer1_overflow()
 	}
 	else
 	{
+		LED_OFF(LED_G);//时间到，绿灯灭
+		LED_ON(LED_R);//红灯亮
 	}
     if(--timeout1)
         return;

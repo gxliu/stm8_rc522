@@ -1,8 +1,5 @@
 #include"rc522.h"
-
-void Delay(unsigned int DelayTime)
-{
-}
+#include"timer2.h"
 
 //******************************************************************/
 //功    能：读RC522寄存器
@@ -250,13 +247,13 @@ char PcdReset()
 {
 	RC522_POWER_ON                          ;
 	RC522_RST_1                             ;
-	Delay(1)                             ;
+	timer2_wait_ms(1)                             ;
 	RC522_RST_0                             ;
-	Delay(1)                             ;
+	timer2_wait_ms(1)                             ;
 	RC522_RST_1                             ;
-	Delay(1)                             ;
+	timer2_wait_ms(1)                             ;
 	WriteRawRC(CommandReg,PCD_RESETPHASE);
-	Delay(1)                             ;
+	timer2_wait_ms(1)                             ;
 	WriteRawRC(ModeReg,0x3D)             ;
 	WriteRawRC(TReloadRegL,30)           ;
 	WriteRawRC(TReloadRegH,0)            ;
@@ -274,7 +271,7 @@ void PcdAntennaOn()
 {
 	unsigned char i;
 	WriteRawRC(TxASKReg,0x40)       ;
-	Delay(10)                       ;
+	timer2_wait_ms(10)                       ;
 	i = ReadRawRC(TxControlReg)     ;
 	if(!(i&0x03))
 		SetBitMask(TxControlReg, 0x03);
@@ -289,13 +286,13 @@ void PcdAntennaTestOn()
 {
 	//*
 	RC522_RST_1                         ;
-	Delay(15)                        ; // 2010.10.09 ???? FOR DEBUG
-	//  Delay(5)                        ; // 2010.10.09 ???? FOR DEBUG
+	timer2_wait_ms(15)                        ; // 2010.10.09 ???? FOR DEBUG
+	//  timer2_wait_ms(5)                        ; // 2010.10.09 ???? FOR DEBUG
 
 	WriteRawRC(TxControlReg,0x02)    ;
 	//*/
 	/*
-	Delay(1)                         ;
+	timer2_wait_ms(1)                         ;
 	SetBitMask(TxControlReg, 0x03);// FOR DEBUG
 	*/
 }

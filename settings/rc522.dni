@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-212862216
+Checksum=822072340
 [CallStack]
 ShowArgs=0
 [Disassembly]
@@ -47,8 +47,7 @@ GraphEnabled=0
 ShowTimeLog=1
 ShowTimeSum=1
 [Breakpoints2]
-Bp0=_ 1 "STD_CODE2" "{$PROJ_DIR$\timer1.c}.50.5" 0 0 1 "" 0 ""
-Count=1
+Count=0
 [Interrupts]
 Enabled=1
 [MemoryMap]

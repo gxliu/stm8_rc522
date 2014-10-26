@@ -10,5 +10,6 @@ void timer2_stop();
 void timer2_irq_on();
 void timer2_irq_off();
 void timer2_wait_ticks(short t);
+void timer2_wait_ms(unsigned short t);
 
 #endif

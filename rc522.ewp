@@ -597,7 +597,7 @@
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>$TOOLKIT_DIR$\config\lnkstm8s103f2.icf</state>
+          <state>$TOOLKIT_DIR$\config\lnkstm8s103f3.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -1570,6 +1570,9 @@
   </configuration>
   <file>
     <name>$PROJ_DIR$\eeprom.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\ht1621.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\iwdg.c</name>

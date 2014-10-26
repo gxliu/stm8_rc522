@@ -1,6 +1,7 @@
 #include "ht1621.h"
+#include "timer2.h"
 
-#define _Nop()	;
+#define _Nop()	//无效;
 
 //char Ht1621Tab[]={0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
 
@@ -18,7 +19,7 @@ void ht1621_init(void)
 	HT1621_CS=1;
 	HT1621_WR=1;
 	HT1621_DAT=1;
-	//DelayMS(2000); //延时使LCD工作电压稳定
+	timer2_wait_ms(20); //延时使LCD工作电压稳定
 	ht1621_wr_cmd(HT_LCD_BIAS);
 	ht1621_wr_cmd(HT_USE_RC256); //使用内部振荡器
 	ht1621_wr_cmd(HT_SYS_OFF);

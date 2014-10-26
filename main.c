@@ -5,7 +5,6 @@
 #include "string.h"
 #include "timer1.h"
 #include "timer2.h"
-#include "timer3.h"
 
 const char sys_info[72]="RFID Seat Booking Service V1.0\n2014.10 © by xhly: xhlyuestc@gmail.com\n";
 
@@ -46,9 +45,9 @@ void find_card(void)
 			uart_putc('\n');
 
 			RED_LED_ON;
-			//timer3_wait_ms(200);
+			timer2_wait_ms(200);
 			RED_LED_OFF;
-			//timer3_wait_ms(200);
+			timer2_wait_ms(200);
 		}
 	}
 	else
@@ -213,7 +212,6 @@ void main( void )
 	uart_puts("OK!\n");
 	timer1_init();
 	timer2_init();
-	//timer3_init();
 	asm("RIM");
 	timer1_start();
 	PcdReset();//复位RC522
@@ -221,8 +219,7 @@ void main( void )
 	disp_menu();
 	while(1)
 	{
-		uart_putc('>');
-		uart_putc('\n');
+		uart_puts(">\n");
 		cmd=uart_getc();
 		//while(uart_state != UART_OVER);
 		exe_cmd(cmd);
